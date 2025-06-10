@@ -1,45 +1,45 @@
-## 简介
+## Introduction
 
-cloudflare 页面发布 mcp 工具，可以将 html 页面发布到 cloudflare，worker 上。
+中文：[README.md](README_zh.md)
 
-sse 体验地址：[cf-page-publish-sse](https://page.sereniblue.com/sse)
+The Cloudflare page publishing MCP tool allows you to publish HTML pages to Cloudflare Workers.
 
-streamableHttp 体验地址：[cf-page-publish-stream](https://page.sereniblue.com/mcp)
+SSE demo address: [cf-page-publish-sse](https://page.sereniblue.com/sse)
 
-体验地址使用worker绑定github的方式部署，确保体验地址与源码保持同步。
+StreamableHttp demo address: [cf-page-publish-stream](https://page.sereniblue.com/mcp)
 
-## 核心功能
+The demo addresses are deployed by binding Workers to GitHub, ensuring synchronization between the demo and the source code.
 
-### 页面发布
+## Core Features
 
-接受两个参数，页面标题和页面内容，可以将 html 内容上传到 cloudflare kv，
+### Page Publishing
 
-返回一个参数，页面的访问链接
+Accepts two parameters: page title and page content. Uploads HTML content to Cloudflare KV and returns the page access link.
 
-## 自部署教程
+## Self-Deployment Tutorial
 
-### 环境要求
+### Requirements
 
-- cloudflare 账户
-- node
+- Cloudflare account
+- Node
 - pnpm
 
-### 部署教程
+### Deployment Tutorial
 
-#### 复制源码
-
-```bash
-git clone https://github.com/Actrue/cf-page-publish-mcp.git #复制源代码
-cd cf-page-publish-mcp #导航到源码
-```
-
-#### 创建并绑定 kv
+#### Clone the Source Code
 
 ```bash
-wrangler kv namespace create cf-page-publish-mcp #创建kv
+git clone https://github.com/Actrue/cf-page-publish-mcp.git # Clone the source code
+cd cf-page-publish-mcp # Navigate to the source code
 ```
 
-执行上述命令后获得以下内容
+#### Create and Bind KV
+
+```bash
+wrangler kv namespace create cf-page-publish-mcp # Create KV
+```
+
+After executing the above command, you will receive the following output:
 
 ```bash
 🌀 Creating namespace with title "cf-page-publish"
@@ -55,34 +55,34 @@ Add the following to your configuration file in your kv_namespaces array:
 }
 ```
 
-复制 kv_namespaces 的 id
+Copy the KV namespace ID.
 
-打开 wrangler.jsonc 文件
+Open the `wrangler.jsonc` file:
 
 ```bash
-	"routes": [{"pattern": "page.sereniblue.com","custom_domain": true}],//替换成你的域名
+	"routes": [{"pattern": "page.sereniblue.com","custom_domain": true}], // Replace with your domain
 	"vars": {
-		"host":"page.sereniblue.com",//替换成你的域名
+		"host":"page.sereniblue.com", // Replace with your domain
 	},
 	"kv_namespaces": [
 		{
 		  "binding": "KV",
-		  "id": "7d776eaeacd0412380f6eb39ca4aea9a"//替换成刚创建的kv的id
+		  "id": "7d776eaeacd0412380f6eb39ca4aea9a" // Replace with the newly created KV ID
 		}
 	  ],
 ```
 
-把 page.sereniblue.com 这个域名替换为自己的域名，把 kv 的 id 切换成刚创建的 id
+Replace `page.sereniblue.com` with your domain and update the KV ID with the newly created one.
 
-#### 部署项目
+#### Deploy the Project
 
 ```bash
-npm i pnpm -g #安装pnpm
-pnpm i #安装项目依赖
-npx wrangler deploy #发布项目至cloudflare
+npm i pnpm -g # Install pnpm
+pnpm i # Install project dependencies
+npx wrangler deploy # Deploy the project to Cloudflare
 ```
 
-## 核心技术
+## Core Technologies
 
 - [hono](https://hono.dev/)
 - [mcp](https://modelcontextprotocol.io/introduction)
