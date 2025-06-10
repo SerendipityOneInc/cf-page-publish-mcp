@@ -4,6 +4,7 @@ import { z } from "zod";
 import { Hono } from "hono"
 import { KV } from "./kv";
 import { env } from "cloudflare:workers";
+import { html } from "hono/html";
 // Define our MCP agent with tools
 export class MyMCP extends McpAgent {
 	server = new McpServer({
@@ -46,7 +47,7 @@ app.get('/pages/:key',async (c)=>{
     if(!res){
         return c.html('页面不存在')
     }
-    return c.html(res.data!)
+    return c.html(html`${res.data}`)
 })
 
 export default app
