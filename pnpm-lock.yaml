@@ -17,6 +17,9 @@ importers:
       hono:
         specifier: ^4.7.11
         version: 4.7.11
+      js-pinyin:
+        specifier: ^0.2.7
+        version: 0.2.7
       zod:
         specifier: ^3.25.51
         version: 3.25.56
@@ -722,6 +725,9 @@ packages:
 
   isexe@2.0.0:
     resolution: {integrity: sha512-RHxMLp9lnKHGHRng9QFhRCMbYAcVpn69smSGcq3f36xjgVVWThj4qqLbTLlq7Ssj8B+fIQ1EuCEGI2lKsyQeIw==}
+
+  js-pinyin@0.2.7:
+    resolution: {integrity: sha512-Dbm7qJDwlC2MRHRXQo7GrVrL5w975tEOX6sfc0M8Z3oL9VhR4uUqgkwaETMqh4bAJ14w4zVs3tXsi9pDxWUmNg==}
 
   json-schema-traverse@0.4.1:
     resolution: {integrity: sha512-xbbCH5dCYU5T8LcEhhuh7HJ88HXuW3qsI3Y0zOZFKfZEHcpWiHU/Jxzk629Brsab/mMiHQti9wMP+845RPe3Vg==}
@@ -1637,6 +1643,8 @@ snapshots:
   is-promise@4.0.0: {}
 
   isexe@2.0.0: {}
+
+  js-pinyin@0.2.7: {}
 
   json-schema-traverse@0.4.1: {}
 

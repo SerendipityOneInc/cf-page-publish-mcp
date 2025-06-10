@@ -3,7 +3,6 @@ import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { z } from "zod";
 import { Hono } from "hono"
 import { KV } from "./kv";
-import { hostname } from "os";
 import { env } from "cloudflare:workers";
 // Define our MCP agent with tools
 export class MyMCP extends McpAgent {
@@ -15,66 +14,24 @@ export class MyMCP extends McpAgent {
 	
 
 	async init() {
-		// Simple addition tool
-		// Page storage tool
+
 	this.server.tool(
-		"创建page页面并且返回网页url",
+		"创建html页面并且返回网页url，需要提供两个参数，pagetitle是页面的题目，然后pagecontent是页面的html内容",
 		{
-			title: z.string(),
-			content: z.string()
+			pagetitle: z.string(),
+			pagecontent: z.string()
 		},
-		async ({ title, content }) => {
-			const result = await KV.put({ title, content });
+		async ({ pagetitle, pagecontent }) => {
+			const result = await KV.put({ title:pagetitle, content:pagecontent });
 			if (!result.state) {
 				return { content: [{ type: "text", text: result.message }] };
 			}
 			return { content: [{ type: "text", text: "页面创建成功，访问URL："+`https://${env.host}/pages/${result.data?.key}` }] };
 		}
 	);
-		this.server.tool(
-			"add",
-			{ a: z.number(), b: z.number() },
-			async ({ a, b }) => ({
-				content: [{ type: "text", text: String(a + b) }],
-			})
-		);
+		
 
-		// Calculator tool with multiple operations
-		this.server.tool(
-			"calculate",
-			{
-				operation: z.enum(["add", "subtract", "multiply", "divide"]),
-				a: z.number(),
-				b: z.number(),
-			},
-			async ({ operation, a, b }) => {
-				let result: number;
-				switch (operation) {
-					case "add":
-						result = a + b;
-						break;
-					case "subtract":
-						result = a - b;
-						break;
-					case "multiply":
-						result = a * b;
-						break;
-					case "divide":
-						if (b === 0)
-							return {
-								content: [
-									{
-										type: "text",
-										text: "Error: Cannot divide by zero",
-									},
-								],
-							};
-						result = a / b;
-						break;
-				}
-				return { content: [{ type: "text", text: String(result) }] };
-			}
-		);
+	
 	}
 }
 
