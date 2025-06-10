@@ -3,6 +3,8 @@ import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { z } from "zod";
 import { Hono } from "hono"
 import { KV } from "./kv";
+import { hostname } from "os";
+import { env } from "cloudflare:workers";
 // Define our MCP agent with tools
 export class MyMCP extends McpAgent {
 	server = new McpServer({
@@ -21,12 +23,12 @@ export class MyMCP extends McpAgent {
 			title: z.string(),
 			content: z.string()
 		},
-		async ({ title, content }, env) => {
-			const result = await KV.put({ title, content }, env);
+		async ({ title, content }) => {
+			const result = await KV.put({ title, content });
 			if (!result.state) {
 				return { content: [{ type: "text", text: result.message }] };
 			}
-			return { content: [{ type: "text", text: "Page stored successfully" }] };
+			return { content: [{ type: "text", text: "页面创建成功，访问URL："+`https://${env.host}/pages/${result.data?.key}` }] };
 		}
 	);
 		this.server.tool(
@@ -80,5 +82,13 @@ const app = new Hono<{ Bindings: Env }>()
 
 app.mount('/sse', MyMCP.serveSSE('/sse').fetch, { replaceRequest: false })
 app.mount('/mcp', MyMCP.serve('/mcp').fetch, { replaceRequest: false} )
+app.get('/pages/:key',async (c)=>{
+    const key=c.req.param('key')
+    const res=await KV.get(key)
+    if(!res){
+        return c.html('页面不存在')
+    }
+    return c.html(res.data!)
+})
 
 export default app

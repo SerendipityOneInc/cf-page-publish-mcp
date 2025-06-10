@@ -1,4 +1,5 @@
 import { usePinyin } from "./pinyin"
+import { env } from "cloudflare:workers";
 export const KV={
     put,
     get
@@ -10,7 +11,7 @@ type PageContent={
     title:string,
 }
 
-async function put(pageContent:PageContent,env:Env) {
+async function put(pageContent:PageContent) {
     try{
     const titleChar=usePinyin(pageContent.title)
     const randomString=generateRandomString(8)
@@ -18,7 +19,10 @@ async function put(pageContent:PageContent,env:Env) {
     const res=await env.KV.put(key,pageContent.content)
     return {
         state:true,
-        message:'存放成功'
+        message:'存放成功',
+        data:{
+            key
+        }
     }
 
 }catch(error){
@@ -30,7 +34,7 @@ async function put(pageContent:PageContent,env:Env) {
 }
 }
 
-async function get(key:string,env:Env) {
+async function get(key:string) {
     try{
     const res=await env.KV.get(key)
     if(!res){
