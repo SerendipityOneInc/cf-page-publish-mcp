@@ -44,7 +44,7 @@ app.mount('/mcp', MyMCP.serve('/mcp').fetch, { replaceRequest: false} )
 app.get('/pages/:key',async (c)=>{
     const key=c.req.param('key')
     const res=await KV.get(key)
-    if(!res){
+    if(!res.data){
         return c.html('页面不存在')
     }
 	//@ts-ignore
