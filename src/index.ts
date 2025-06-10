@@ -16,6 +16,7 @@ export class MyMCP extends McpAgent {
 	async init() {
 
 	this.server.tool(
+		"页面发布工具",
 		"创建html页面并且返回网页url，需要提供两个参数，pagetitle是页面的题目，然后pagecontent是页面的html内容",
 		{
 			pagetitle: z.string(),
