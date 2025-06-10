@@ -13,6 +13,13 @@ type PageContent={
 
 async function put(pageContent:PageContent) {
     try{
+    // 检查content是否为标准HTML格式
+    if(!pageContent.content.startsWith('<') || !pageContent.content.includes('>')) {
+        return {
+            state:false,
+            message:'存放失败，content不是标准HTML格式'
+        }
+    }
     const titleChar=usePinyin(pageContent.title)
     const randomString=generateRandomString(8)
     const key=titleChar+randomString
