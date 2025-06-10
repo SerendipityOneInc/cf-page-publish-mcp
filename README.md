@@ -1,21 +1,26 @@
 ## 简介
 
-cloudflare页面发布mcp工具，可以将html页面发布到cloudflare，worker上。
-sse体验地址：[cf-page-publish-sse](https://page.sereniblue.com/sse)
-streamableHttp体验地址：[cf-page-publish-stream](https://page.sereniblue.com/mcp)
+cloudflare 页面发布 mcp 工具，可以将 html 页面发布到 cloudflare，worker 上。
+
+sse 体验地址：[cf-page-publish-sse](https://page.sereniblue.com/sse)
+
+streamableHttp 体验地址：[cf-page-publish-stream](https://page.sereniblue.com/mcp)
+
+体验地址使用worker绑定github的方式部署，确保体验地址与源码保持同步。
 
 ## 核心功能
 
 ### 页面发布
 
-接受两个参数，页面标题和页面内容，可以将html内容上传到cloudflare kv，
+接受两个参数，页面标题和页面内容，可以将 html 内容上传到 cloudflare kv，
+
 返回一个参数，页面的访问链接
 
 ## 自部署教程
 
 ### 环境要求
 
-- cloudflare账户
+- cloudflare 账户
 - node
 - pnpm
 
@@ -28,7 +33,7 @@ git clone https://github.com/Actrue/cf-page-publish-mcp.git #复制源代码
 cd cf-page-publish-mcp #导航到源码
 ```
 
-#### 创建并绑定kv
+#### 创建并绑定 kv
 
 ```bash
 wrangler kv namespace create cf-page-publish-mcp #创建kv
@@ -50,9 +55,9 @@ Add the following to your configuration file in your kv_namespaces array:
 }
 ```
 
-复制kv_namespaces待用
+复制 kv_namespaces 的 id
 
-打开wrangler.jsonc文件
+打开 wrangler.jsonc 文件
 
 ```bash
 	"routes": [{"pattern": "page.sereniblue.com","custom_domain": true}],//替换成你的域名
@@ -67,7 +72,7 @@ Add the following to your configuration file in your kv_namespaces array:
 	  ],
 ```
 
-把page.sereniblue.com这个域名替换为自己的域名，把kv的id切换成刚创建的id
+把 page.sereniblue.com 这个域名替换为自己的域名，把 kv 的 id 切换成刚创建的 id
 
 #### 部署项目
 
