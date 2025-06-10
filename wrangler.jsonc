@@ -15,6 +15,12 @@
 	"vars": {
 		"host":"page.sereniblue.com",//替换成你的域名
 	},
+	"kv_namespaces": [
+		{
+		  "binding": "KV",
+		  "id": "7d776eaeacd0412380f6eb39ca4aea9a"
+		}
+	  ],
 	"migrations": [
 		{
 			"new_sqlite_classes": [
@@ -33,13 +39,8 @@
 	},
 	"observability": {
 		"enabled": true
-	},
-	"kv_namespaces": [
-		{
-		  "binding": "KV",
-		  "id": "7d776eaeacd0412380f6eb39ca4aea9a"
-		}
-	  ]
+	}
+
 	/**
 	 * Smart Placement
 	 * Docs: https://developers.cloudflare.com/workers/configuration/smart-placement/#smart-placement

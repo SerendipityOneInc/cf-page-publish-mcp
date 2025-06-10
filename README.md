@@ -1,50 +1,84 @@
-# Building a Remote MCP Server on Cloudflare (Without Auth)
+## 简介
 
-This example allows you to deploy a remote MCP server that doesn't require authentication on Cloudflare Workers. 
+cloudflare页面发布mcp工具，可以将html页面发布到cloudflare，worker上。
+sse体验地址：[cf-page-publish-sse](https://page.sereniblue.com/sse)
+streamableHttp体验地址：[cf-page-publish-stream](https://page.sereniblue.com/mcp)
 
-## Get started: 
+## 核心功能
 
-[![Deploy to Workers](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/cloudflare/ai/tree/main/demos/remote-mcp-authless)
+### 页面发布
 
-This will deploy your MCP server to a URL like: `remote-mcp-server-authless.<your-account>.workers.dev/sse`
+接受两个参数，页面标题和页面内容，可以将html内容上传到cloudflare kv，
+返回一个参数，页面的访问链接
 
-Alternatively, you can use the command line below to get the remote MCP Server created on your local machine:
+## 自部署教程
+
+### 环境要求
+
+- cloudflare账户
+- node
+- pnpm
+
+### 部署教程
+
+#### 复制源码
+
 ```bash
-npm create cloudflare@latest -- my-mcp-server --template=cloudflare/ai/demos/remote-mcp-authless
+git clone https://github.com/Actrue/cf-page-publish-mcp.git #复制源代码
+cd cf-page-publish-mcp #导航到源码
 ```
 
-## Customizing your MCP Server
+#### 创建并绑定kv
 
-To add your own [tools](https://developers.cloudflare.com/agents/model-context-protocol/tools/) to the MCP server, define each tool inside the `init()` method of `src/index.ts` using `this.server.tool(...)`. 
+```bash
+wrangler kv namespace create cf-page-publish-mcp #创建kv
+```
 
-## Connect to Cloudflare AI Playground
+执行上述命令后获得以下内容
 
-You can connect to your MCP server from the Cloudflare AI Playground, which is a remote MCP client:
-
-1. Go to https://playground.ai.cloudflare.com/
-2. Enter your deployed MCP server URL (`remote-mcp-server-authless.<your-account>.workers.dev/sse`)
-3. You can now use your MCP tools directly from the playground!
-
-## Connect Claude Desktop to your MCP server
-
-You can also connect to your remote MCP server from local MCP clients, by using the [mcp-remote proxy](https://www.npmjs.com/package/mcp-remote). 
-
-To connect to your MCP server from Claude Desktop, follow [Anthropic's Quickstart](https://modelcontextprotocol.io/quickstart/user) and within Claude Desktop go to Settings > Developer > Edit Config.
-
-Update with this configuration:
-
-```json
+```bash
+🌀 Creating namespace with title "cf-page-publish"
+✨ Success!
+Add the following to your configuration file in your kv_namespaces array:
 {
-  "mcpServers": {
-    "calculator": {
-      "command": "npx",
-      "args": [
-        "mcp-remote",
-        "http://localhost:8787/sse"  // or remote-mcp-server-authless.your-account.workers.dev/sse
-      ]
+  "kv_namespaces": [
+    {
+      "binding": "cf_page_publish",
+      "id": "7d776eaeacd0412380f6eb39ca4aea9a"
     }
-  }
+  ]
 }
 ```
 
-Restart Claude and you should see the tools become available. 
+复制kv_namespaces待用
+
+打开wrangler.jsonc文件
+
+```bash
+	"routes": [{"pattern": "page.sereniblue.com","custom_domain": true}],//替换成你的域名
+	"vars": {
+		"host":"page.sereniblue.com",//替换成你的域名
+	},
+	"kv_namespaces": [
+		{
+		  "binding": "KV",
+		  "id": "7d776eaeacd0412380f6eb39ca4aea9a"//替换成刚创建的kv的id
+		}
+	  ],
+```
+
+把page.sereniblue.com这个域名替换为自己的域名，把kv的id切换成刚创建的id
+
+#### 部署项目
+
+```bash
+npm i pnpm -g #安装pnpm
+pnpm i #安装项目依赖
+npx wrangler deploy #发布项目至cloudflare
+```
+
+## 核心技术
+
+- [hono](https://hono.dev/)
+- [mcp](https://modelcontextprotocol.io/introduction)
+- [cloudflare worker](https://workers.cloudflare.com/)

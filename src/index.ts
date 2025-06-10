@@ -19,10 +19,10 @@ export class MyMCP extends McpAgent {
 		"创建html页面并且返回网页url，需要提供两个参数，pagetitle是页面的题目，然后pagecontent是页面的html内容",
 		{
 			pagetitle: z.string(),
-			pagecontent: z.string()
+			pagehtml: z.string()
 		},
-		async ({ pagetitle, pagecontent }) => {
-			const result = await KV.put({ title:pagetitle, content:pagecontent });
+		async ({ pagetitle, pagehtml }) => {
+			const result = await KV.put({ title:pagetitle, content:pagehtml });
 			if (!result.state) {
 				return { content: [{ type: "text", text: result.message }] };
 			}
