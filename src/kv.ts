@@ -20,7 +20,7 @@ async function put(pageContent:PageContent) {
             message:'存放失败，content不是标准HTML格式'
         }
     }
-    const titleChar=usePinyin(pageContent.title)
+    const titleChar = usePinyin(pageContent.title).replace(/\s+/g, "");
     const randomString=generateRandomString(8)
     const key=titleChar+randomString
     const res=await env.KV.put(key,pageContent.content)

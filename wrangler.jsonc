@@ -11,14 +11,14 @@
 		"nodejs_compat"
 	],
 	"preview_urls": false,
-	"routes": [{"pattern": "page.sereniblue.com","custom_domain": true}],//替换成你的域名
+	"routes": [{"pattern": "page.yesy.site","custom_domain": true}],//替换成你的域名
 	"vars": {
-		"host":"page.sereniblue.com",//替换成你的域名
+		"host":"page.yesy.site",//替换成你的域名
 	},
 	"kv_namespaces": [
 		{
 		  "binding": "KV",
-		  "id": "7d776eaeacd0412380f6eb39ca4aea9a"
+		  "id": "406ce1e7e2824b1e956cdd80604f5680"
 		}
 	  ],
 	"migrations": [
