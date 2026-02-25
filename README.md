@@ -8,15 +8,40 @@ sse 体验地址：[cf-page-publish-sse](https://page.sereniblue.com/sse)
 
 streamableHttp 体验地址：[cf-page-publish-stream](https://page.sereniblue.com/mcp)
 
+ui 可视化页面体验地址：[cf-page-publish-ui](https://page.sereniblue.com)
+
 体验地址使用worker绑定github的方式部署，确保体验地址与源码保持同步。
 
 ## 核心功能
 
-### 页面发布
+### HTML页面编辑器
+
+提供可视化的HTML页面编辑器界面，用户可以通过Web界面直接编辑和发布HTML页面：
+
+- **实时预览**：左侧编辑HTML代码，右侧实时显示预览效果
+- **HTML验证**：前端自动检查HTML格式完整性，确保内容有效
+- **页面发布**：输入页面标题后一键发布，自动生成访问链接
+- **响应式设计**：支持桌面和移动设备，现代化UI界面
+
+访问网站首页即可使用HTML编辑器功能。
+
+### 页面发布（MCP协议）
 
 接受两个参数，页面标题和页面内容，可以将 html 内容上传到 cloudflare kv，
 
 返回一个参数，页面的访问链接
+
+### 获取页面图片
+
+根据页面ID获取渲染后的PNG图片，页面ID就是页面发布工具返回的pages/后面的那一段
+
+### 页面更新工具
+
+通过页面ID更新已有页面的HTML内容，需要提供页面ID、新的页面标题和新的HTML内容
+
+### 页面删除工具
+
+通过页面ID删除已有页面，需要提供页面ID
 
 ## 自部署教程
 
